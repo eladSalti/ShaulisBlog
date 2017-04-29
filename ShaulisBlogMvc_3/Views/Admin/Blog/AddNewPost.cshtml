@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "AddNewPost";
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $("input[type=checkbox]").change(function (e) {
+            console.log("e:", e.currentTarget.name);
+            var elem = e.currentTarget.name;
+            elem = elem.replace("has", "").toLowerCase();
+            elem = "#" + elem + "-url-cont";
+            if (e.currentTarget.checked) {
+                $(elem).show();
+            }
+            else {
+                $(elem).hide();
+            }
+        });
+        $("#hasImage").trigger("change");
+        $("#hasVideo").trigger("change");
+
+        var clicked = false;
+        $("button[type=submit]").click(function (e) {
+            
+            if (!clicked) {
+                e.preventDefault();
+                clicked = true;
+
+                if ($("#hasImage:checked").length == 0) {
+                    $("#imageUrl").val("");
+                }
+
+                if ($("#hasVideo:checked").length == 0) {
+                    $("#videoUrl").val("");
+                }
+                $(this).click();
+            }            
+        });
+    });
+</script>
+<h2>Add New Post</h2>
+<div id="add-new-post">
+    <form action="~/admin/blog/addnewpost" method="post">
+        <div>
+            <span>Title: </span> @Html.TextBox("postTitle",null,new {required = "required" })
+        </div>
+        <div>
+            <span>Author: </span> @Html.TextBox("author",null, new {required = "required" })
+        </div>
+        <div>
+            <span>Website: </span> @Html.TextBox("AuthorSiteAddress",null, new { @type = "url", required = "required" })
+        </div>
+        <div>
+            <span>Content: </span> @Html.TextArea("postContent", null, new { required = "required" })
+        </div>
+        <div>
+            @Html.CheckBox("hasImage", true)<span>Image: </span>
+            @Html.CheckBox("hasVideo", true)<span>Video: </span>
+        </div>
+        <div id="image-url-cont">
+            <span>Image Url: </span> @Html.TextBox("imageUrl",null, new { @type = "url"})
+        </div>
+        <div id="video-url-cont">
+            <span>Video Url: </span> @Html.TextBox("videoUrl", null, new { @type = "url" })
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>

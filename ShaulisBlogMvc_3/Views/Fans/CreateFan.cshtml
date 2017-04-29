@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Join to the Club";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css" />
+
+<script src="~/Content/scripts/g_places.js"></script>
+
+<h2>Join to My Fans Club!</h2>
+<h4>Please leave your details below:</h4>
+<form action="~/fans/create" method="post">
+    <div id="update-cont">
+        <div><span>First Name: </span>@Html.TextBox("Fan.firstName", null, new { required = "required" })</div>
+        <div><span>Last Name: </span>@Html.TextBox("Fan.lastName", null, new { required = "required" })</div>
+        <div><span>Date of Birth: </span>@Html.TextBox("Fan.birthday", null, new {@type="date", required = "required" })</div>
+        <div><span>Gender: </span>@Html.DropDownList("Fan.gender",
+        new SelectListItem[] {
+            new SelectListItem(){ Text = "Male", Selected = true}, 
+            new SelectListItem(){ Text = "Female"}
+        })
+        </div>
+        <div><span>Years in Club: </span>@Html.TextBox("Fan.yearsInClub", null, new {@type="number", required = "required", min = 1 })</div>
+        <div><span>Country: </span>@Html.TextBox("Fan.FanLocation.country", null, new { @type = "text", required = "required", autocomplete = "off" })</div>
+        <div><span>City: </span>@Html.TextBox("Fan.FanLocation.city", null, new { @type = "text", required = "required", autocomplete = "off" })</div>
+        <div><span>Street: </span>@Html.TextBox("Fan.FanLocation.street", null, new { @type = "text", required = "required", autocomplete = "off" })</div>
+        <div><span>Number: </span>@Html.TextBox("Fan.FanLocation.streetNumber", null, new { @type = "number", required = "required", min = 1 })</div>
+        <div><span>Apartment Number: </span>@Html.TextBox("Fan.FanLocation.aptNumber", null, new { @type = "number", required = "required", min = 1 })</div>
+        @Html.TextBox("Fan.FanLocation.PlaceId", null, new { @type = "hidden", required = "required" })
+
+    </div>
+    <button class="btn btn-success" type="submit">Submit</button>
+</form>

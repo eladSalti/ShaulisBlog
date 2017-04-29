@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "Edit Post";
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+        $("input[type=checkbox]").change(function (e) {
+            console.log("e:", e.currentTarget.name);
+            var elem = e.currentTarget.name;
+            elem = elem.replace("has", "").toLowerCase();
+            elem = "#" + elem + "-url-cont";
+            if (e.currentTarget.checked) {
+                $(elem).show();
+            }
+            else {
+                $(elem).hide();
+            }
+        });
+        $("#hasImage").trigger("change");
+        $("#hasVideo").trigger("change");
+
+        var clicked = false;
+        $("button[type=submit]").click(function (e) {
+
+            if (!clicked) {
+                e.preventDefault();
+                clicked = true;
+
+                if ($("#hasImage:checked").length == 0) {
+                    $("#imageUrl").val("");
+                }
+
+                if ($("#hasVideo:checked").length == 0) {
+                    $("#videoUrl").val("");
+                }
+                $(this).click();
+            }
+        });
+    });
+</script>
+<h2>Edit Post</h2>
+<div id="add-new-post">
+    <form action="~/admin/blog/posts/@Model.PostId/update" method="post">
+        <div>
+            <span>Title: </span> @Html.TextBox("postTitle",(string)Model.PostTitle, new { required = "required" })
+        </div>
+        <div>
+            <span>Author: </span> @Html.TextBox("author", (string)Model.Author, new {required = "required" })
+        </div>
+        <div>
+            <span>Website: </span> @Html.TextBox("authorSiteAddress", (string)Model.AuthorSiteAddress, new { @type = "url", required = "required" })
+        </div>
+        <div>
+            <span>Content: </span> @Html.TextArea("postContent", (string)Model.PostContent, new { required = "required" })
+        </div>
+        <div>
+            @Html.CheckBox("hasImage", (bool)(Model.ImageUrl != null))<span>Image</span>
+            @Html.CheckBox("hasVideo", (bool)(Model.VideoUrl != null))<span>Video</span>
+        </div>
+        <div id="image-url-cont">
+            <span>Image Url: </span> @Html.TextBox("imageUrl", (string)Model.ImageUrl, new { @type = "url" })
+        </div>
+        <div id="video-url-cont">
+            <span>Video Url: </span> @Html.TextBox("videoUrl", (string)Model.VideoUrl, new { @type = "url" })
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+

@@ -1,0 +1,79 @@
+﻿@{
+    if (ViewBag.FilterDisplayClass!="show")
+    {
+        ViewBag.FilterDisplayClass = "hide";
+    }
+    
+    
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title | Shauli's Blog </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link href="~/Content/css/11.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="container">
+      <audio autoplay="autoplay">
+        <!--<source src="~/Content/sound/sound.mp3" type="audio/mp3">-->
+        Your browser does not support the audio tag.
+    </audio>
+	<header>
+		<h1 id="blogTitle">Ha-Blog Shel Shauli</h1>
+	</header>
+	<nav>
+		<!-- Navigation -->
+	<ul>
+		<li class="@ViewBag.BlogSelected"><a href="~/blog">Blog</a></li>
+		<li class="@ViewBag.FansSelected"><a href="~/fans">Fans Club</a></li>	
+		<li class="subscribe">
+            <a href="~/rss">
+            <div id="transDemo2">
+                <div class="hover">
+                    <img src="http://www.ashlylorenzana.com/wp-content/uploads/2013/12/12065637851779660844SRD_RSS_Logo.svg_.hi_.png" width="30" height="30">
+                </div>
+            </div>
+            Subscribe via. RSS</a></li>
+        <li class="@ViewBag.ContactSelected"><a href="~/Admin">Admin</a></li>
+	</ul>
+	</nav>
+    
+
+	<section id="intro">
+		<!-- Introduction --> 
+        
+		<header>
+			<h2>Do you have questions for me?</h2>
+		</header>
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut.</p>
+        <img src="~/Content/images/intro_shauli.png" alt="Shauli" />
+	</section>
+
+    
+	<div class="row" id="content">
+        <div id="mainContent">
+            @RenderBody()
+        </div>
+	</div>
+	<footer>
+		<!-- Footer -->
+		<div>
+			<section id="about">
+				<header>
+					<h3>About</h3>
+				</header>
+				<p>Site was developed and designed by: Ben Mamiya, Elad Salti and Tal Shmuli.</p><p>All Rights Reserved.</p>
+			</section>
+		</div>
+	</footer>
+    <div>
+       
+    </div>
+</body>
+</html>

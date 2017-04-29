@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Delete Fan";
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+
+<form action="~/admin/fans/@Model.Id/delete/" method="post">
+    <h2>Delete Fan</h2>
+    <div>Do you really want to delete <b>@Model.FirstName @Model.LastName</b> ?</div>
+    <button type="submit">Delete</button>
+</form>

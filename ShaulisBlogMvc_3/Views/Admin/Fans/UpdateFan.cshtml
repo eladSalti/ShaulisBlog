@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Update Fan";
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.structure.min.css" />
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css" />
+
+<script src="~/Content/scripts/g_places.js"></script>
+<h2>Update Fan</h2>
+<form action="~/admin/fans/@Model.Id/update" method="post">
+    <div id="update-cont">
+        <div><span>First Name: </span>@Html.TextBox("Fan.firstName", (string)Model.FirstName, new { required = "required" })</div>
+        <div><span>Last Name: </span>@Html.TextBox("Fan.lastName", (string)Model.LastName, new { required = "required" })</div>
+        <div><span>Date of Birth: </span>@Html.TextBox("Fan.birthday", ((DateTime)Model.Birthday).ToString("yyyy-MM-dd"), new {@type="date"})</div>
+
+        <div><span>Country: </span>@Html.TextBox("Fan.FanLocation.country", (string)Model.FanLocation.Country, new { @type = "text", required = "required", autocomplete = "off" })</div>
+        <div><span>City: </span>@Html.TextBox("Fan.FanLocation.city", (string)Model.FanLocation.City, new { @type = "text", required = "required", autocomplete = "off" })</div>
+        <div><span>Street: </span>@Html.TextBox("Fan.FanLocation.street", (string)Model.FanLocation.Street, new { @type = "text", required = "required", autocomplete = "off" })</div>
+        <div><span>Number: </span>@Html.TextBox("Fan.FanLocation.streetNumber", (int)Model.FanLocation.StreetNumber, new { @type = "number", required = "required", min = 1})</div>
+        <div><span>Apartment Number: </span>@Html.TextBox("Fan.FanLocation.aptNumber", (int)Model.FanLocation.AptNumber, new { @type = "number", required = "required", min = 1})</div>
+        @Html.TextBox("Fan.FanLocation.PlaceId", (string)Model.FanLocation.PlaceId, new { @type = "hidden", required = "required" })
+
+
+        <div>
+            <span>Gender: </span>@Html.DropDownList("Fan.gender",
+        new SelectListItem[] {
+            new SelectListItem(){ Text = "Male", Selected = Model.Gender == "Male"},
+            new SelectListItem(){ Text = "Female", Selected = Model.Gender == "Famale"}
+        })
+        </div>
+        <div><span>Years in Club: </span>@Html.TextBox("Fan.yearsInClub", (int)Model.YearsInClub, new {@type="number", required = "required", min = 1})</div>
+    </div>
+    <button class="btn btn-success" type="submit">Update</button>
+</form>
+
+
+
+
+

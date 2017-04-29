@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<div class="row" style="margin-top:10px; margin-left:15px;">
+    <ul class="nav navbar-nav navbar-default">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="~/admin/blog/addnewpost">Add New Post</a></li>
+                <li><a href="~/admin/blog/manageposts">Manage Posts</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Fans <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="~/admin/fans/fanslist">Manage Fans</a></li>
+                <li><a href="~/admin/fans/map">View Fans on Map</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<canvas id="canvasSeparator" style="width:100%; height:20px;">Your browser does not support canvas</canvas>
+<script>
+        var canvas = document.getElementById("canvasSeparator");
+        var context = canvas.getContext("2d");
+
+        // Create gradient
+        var grd = context.createLinearGradient(75, 50, 5, 100);
+        grd.addColorStop(0, "#b4dd10");
+        grd.addColorStop(0.18, "#a6d011");
+        grd.addColorStop(0.33, "#94bf11");
+        grd.addColorStop(0.76, "#5b8a11");
+        grd.addColorStop(0.89, "#4d7d12");
+        grd.addColorStop(1, "#467612");
+
+
+        // Fill with gradient
+        context.fillStyle = grd;
+        context.fillRect(0,0,1148,20);
+
+</script>
+@RenderBody()
+
+

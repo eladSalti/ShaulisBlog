@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Fans Map";
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+<style>
+    #map {
+        height: 100%;
+    }
+
+    #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+    }
+
+    #floating-panel {
+        width: 440px;
+    }
+
+    #place-id {
+        width: 250px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-8" style="height:500px; margin-bottom:40px;">
+        <h3>Fans on map:</h3>
+    <div id="map"></div></div>
+    <div class="col-lg-4"><h3>Fans brokendown by location:</h3>
+        <ul id="fans-locations-list" class="list-group">
+            @foreach (var item in (Dictionary<string, List<ShaulisBlogMvc_3.Models.Fans.Fan>>)Model.Item2)
+            { 
+                <li class="list-group-item"><h3>@item.Key:</h3>
+                    <ul>
+                        @foreach (var fan in item.Value)
+                        {
+                            <li class="list-group-item">@(fan.FirstName + " " + fan.LastName)</li>
+                        }
+                    </ul>
+                </li>
+            }
+        </ul>
+    </div>
+    
+
+</div>
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 8,
+            center: { lat: 40.72, lng: -73.96 }
+        });
+        var geocoder = new google.maps.Geocoder;
+
+        geocodePlaceId(geocoder, map);
+    }
+    function geocodePlaceId(geocoder, map) {
+        var fanPlaces = JSON.parse('@Html.Raw((string)Model.Item1)');
+
+        for (var i = 0; i < fanPlaces.length; i++) {
+            var index = i;
+            geocoder.geocode({ 'placeId': fanPlaces[i].PlaceId }, function (results, status) {
+
+                if (status === 'OK') {
+                    if (results[0]) {
+                        map.setZoom(11);
+                        map.setCenter(results[0].geometry.location);
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: results[0].geometry.location,
+                            title: results[0].formatted_address,
+                            animation: google.maps.Animation.DROP
+                        });
+                        var _infowindow = new google.maps.InfoWindow;
+
+                        var content = "<div>" + results[0].formatted_address + "</div>" +
+                                       "<div>" + fanPlaces[index].FanName + "</div>";
+                        _infowindow.setContent(content);
+
+                        marker.addListener('click', function () {
+                            console.log("_infowindow: ", _infowindow);
+                            _infowindow.open(map, marker);
+                        });
+                    } else {
+                        //window.alert('No results found');
+                    }
+                } else {
+                    //window.alert('Geocoder failed due to: ' + status);
+                }
+            });
+        }
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC27aoaronxgrVHbDB_L7zRLLxAvj_OZsc&callback=initMap"></script>
+
+
+

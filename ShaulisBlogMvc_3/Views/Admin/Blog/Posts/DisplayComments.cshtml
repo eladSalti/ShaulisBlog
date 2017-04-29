@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Comments";
+    Layout = "~/Views/Admin/AdminLayout.cshtml";
+}
+
+<h2>Comments for <span style="font-style:italic">@Model.PostTitle</span>: </h2>
+@if (Model.Comments.Count > 0)
+{
+<table>
+    <thead>
+        <tr>
+            <th>Content</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var comment in Model.Comments)
+        {
+            <tr>
+                <td>@comment.CommentContent</td>
+                <td><a href="~/admin/blog/posts/@Model.PostId/comments/@comment.CommentId/delete">Delete</a></td>
+            </tr>
+        }        
+    </tbody>
+</table>
+}
+else
+{
+        <div>No comments for this post.</div>
+}
+

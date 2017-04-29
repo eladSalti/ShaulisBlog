@@ -1,0 +1,175 @@
+﻿@{
+    ViewBag.Title = "Blog";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+    ViewBag.FilterDisplayClass = "show";
+
+}
+<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+<script>
+    $(document).ready(function () {
+        $('#dateRange').daterangepicker({
+            "format": "MM/DD/YYYY",
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        });
+
+        var picker = $('#dateRange').data('daterangepicker');
+        updateInputs(picker);
+
+        $("#dateRange").on('apply.daterangepicker', function (ev, rangePicker) {
+            updateInputs(rangePicker);
+        });
+
+        $("#dateRange").on('hide.daterangepicker', function (ev, rangePicker) {
+            updateInputs(rangePicker);
+        });
+       
+
+    });
+
+    function updateInputs(rangePicker) {
+        $("input[name='dateFrom']").val(rangePicker.startDate.format('MM/DD/YYYY 00:00'));
+        $("input[name='dateTo']").val(rangePicker.endDate.format('MM/DD/YYYY 23:59'));
+    }
+
+</script>
+<div class="col-lg-9">
+    <section id="filter">
+        <form action="/blog/filter" method="post">
+            <h4>Filter By:</h4>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div>Date Range:</div>
+                    <input name="dateRange" id="dateRange" type="text" />
+                    <input name="dateFrom" type="hidden" />
+                    <input name="dateTo" type="hidden" />
+                </div>
+                <div class="col-lg-2">
+                    <span>Author:</span>
+                    <input name="author" type="text" />
+                </div>
+                <div class="col-lg-3">
+                    <span>Blog Content:</span>
+                    <input name="Content" type="text" />
+                </div>
+                <div class="col-lg-2">
+                    <span>Comment Content:</span>
+                    <input name="CommentContent" type="text" />
+                </div>
+                <div class="col-lg-2" style="margin-top:15px;text-align:center">
+                    <input name="btnFilter" class="btn btn-success" type="submit" value="Filter" />
+                </div>
+            </div>
+
+        </form>
+    </section>
+    @if (Model.Count > 0)
+    {
+        int i = 0;
+        foreach (var post in Model)
+        {
+
+            <section>
+                <article class="blogPost">
+                    <header>
+                        <h2 id="post_ @(+ (i++))">@post.PostTitle</h2>
+                        <p>Posted on <time datetime="@post.PostDate">@post.PostDate.ToString("D")</time> by <a href="@post.AuthorSiteAddress">@post.Author</a> - <a href="#comments">@post.Comments.Count comments</a></p>
+                    </header>
+                    <div>
+                        <p>@post.PostContent</p>
+
+                        @if (post.ImageUrl != null && post.ImageUrl != String.Empty)
+                    {
+                            <img src="@post.ImageUrl" alt="" />
+                        }
+                        @if (post.VideoUrl != null && post.VideoUrl != String.Empty)
+                    {
+                            <video controls="controls">
+                                <source src="@post.VideoUrl" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        }
+
+                    </div>
+                </article>
+            </section>
+
+            <section id="comments">
+                <h3>Comments</h3>
+                @foreach (var comment in post.Comments)
+                {
+                    <article>
+                        <header>
+                            <a href="@comment.CommentAuthorWebsite">@comment.CommentAuthor</a> on <time datetime="@comment.CommentDate">@comment.CommentDate.ToString("d") at @comment.CommentDate.ToString("t")</time>
+                        </header>
+                        <p>@comment.CommentContent</p>
+                    </article>
+                }
+            </section>
+            <form action="~/blog/addnewcomment/@post.PostId" method="post">
+                <h3>Post a comment</h3>
+                <p>
+                    <label for="name">Name</label>
+                    <input name="commentAuthor" id="name" type="text" required />
+                </p>
+                <p>
+                    <label for="email">E-mail</label>
+                    <input name="email" id="email" type="email" required />
+                </p>
+                <p>
+                    <label for="website">Website</label>
+                    <input name="commentAuthorWebsite" id="website" type="url" />
+                </p>
+                <p>
+                    <label for="comment">Comment</label>
+                    <textarea name="commentContent" id="comment" required></textarea>
+                </p>
+                <p>
+                    <input type="submit" value="Post comment" />
+                </p>
+            </form>
+        }
+    }
+    else
+    {
+        <div class="alert alert-warning">No results found for the criteria specified.</div>
+    }
+
+
+</div>
+
+<aside class="col-lg-3">
+    <section>
+        <header>
+            <h3>About Me:</h3>
+        </header>
+        <ul>
+            <li>My name is Shauli and i have been writing this blog since late 2016. Feel free to leave comments and questions. I love to hear from my followers!</li>
+
+        </ul>
+    </section>
+    <section>
+        <header>
+            <h3>Recent Posts:</h3>
+        </header>
+        <ul>
+@for (int i = 0; i < Model.Count && i < 3; i++)
+{
+    <li><a href="#post_ @(+i)">@Model[i].PostTitle</a></li>
+}
+            
+        </ul>
+    </section>
+</aside>
+
+
